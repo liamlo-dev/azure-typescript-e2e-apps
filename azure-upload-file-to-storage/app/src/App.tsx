@@ -3,6 +3,7 @@ import { Box, Button, Card, CardMedia, Grid, Typography } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
 import ErrorBoundary from './components/error-boundary';
 import { convertFileToArrayBuffer } from './lib/convert-file-to-arraybuffer';
+import { useCallback } from 'react';
 
 import axios, { AxiosResponse } from 'axios';
 import './App.css';
@@ -25,6 +26,17 @@ type ListResponse = {
 };
 
 function App() {
+  const showList = useCallback(async () => {
+    const endpoint = 'http://localhost:4280/data-api/rest/Person';
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      console.table(data.value);
+    } catch (error) {
+      console.error('Failed to fetch data:', error);
+    }
+  }, []);
+
   const containerName = `upload`;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [sasTokenUrl, setSasTokenUrl] = useState<string>('');
@@ -133,6 +145,15 @@ function App() {
             <b>Container: {containerName}</b>
           </Typography>
 
+          {/* SQL Section */}
+          <Box m={4} display="flex" justifyContent="space-between">
+            <Button id="list" onClick={showList}>List</Button>
+            <Button id="get" onClick={() => console.log('Get button clicked')}>Get</Button>
+            <Button id="update" onClick={() => console.log('Update button clicked')}>Update</Button>
+            <Button id="create" onClick={() => console.log('Create button clicked')}>Create</Button>
+            <Button id="delete" onClick={() => console.log('Delete button clicked')}>Delete</Button>
+          </Box>
+
           {/* File Selection Section */}
           <Box
             display="block"
@@ -200,9 +221,9 @@ function App() {
               <Grid item xs={6} sm={4} md={3} key={item}>
                 <Card>
                   {item.endsWith('.jpg') ||
-                  item.endsWith('.png') ||
-                  item.endsWith('.jpeg') ||
-                  item.endsWith('.gif') ? (
+                    item.endsWith('.png') ||
+                    item.endsWith('.jpeg') ||
+                    item.endsWith('.gif') ? (
                     <CardMedia component="img" image={item} alt={item} />
                   ) : (
                     <Typography variant="body1" gutterBottom>
