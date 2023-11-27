@@ -3,7 +3,7 @@
   "data-source": {
     "database-type": "mysql",
     "options": {
-      "set-session-context": false 
+      "set-session-context": false
     },
     "connection-string": "@env('DATABASE_CONNECTION_STRING')"
   },
@@ -20,7 +20,9 @@
     "host": {
       "mode": "production",
       "cors": {
-        "origins": ["http://localhost:4280"],
+        "origins": [
+          "http://localhost:5173"
+        ],
         "allow-credentials": false
       },
       "authentication": {
@@ -29,11 +31,24 @@
     }
   },
   "entities": {
-    "Person": {
-      "source": "MyTestPersonTable",
+    "media": {
+      "source": "Media",
       "permissions": [
         {
-          "actions": ["*"],
+          "actions": [
+            "*"
+          ],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "users": {
+      "source": "users",
+      "permissions": [
+        {
+          "actions": [
+            "*"
+          ],
           "role": "anonymous"
         }
       ]
