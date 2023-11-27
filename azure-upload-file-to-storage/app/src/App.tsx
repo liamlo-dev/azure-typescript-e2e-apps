@@ -27,7 +27,7 @@ type ListResponse = {
 
 function App() {
   const showList = useCallback(async () => {
-    const endpoint = 'http://localhost:4280/data-api/rest/Person';
+    const endpoint = '/data-api/rest/Person';
     try {
       const response = await fetch(endpoint);
       const data = await response.json();
