@@ -250,7 +250,7 @@ function App({ username }) {
     if (uploadStatus === 'Successfully finished upload') {
       console.log(blobReference)
       createData();
-      setUploadStatus(''); // Reset uploadStatus here
+      setUploadStatus(''); // Reset uploadStatus here OK
       showList();
     }
   }, [uploadStatus, createData, showList]);
