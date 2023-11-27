@@ -6,7 +6,7 @@ function Page() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [username, setUsername] = useState('');
 
-    const handleLogin = (user) => {
+    const handleLogin = (user: React.SetStateAction<string>) => {
         setUsername(user);
         setIsAuthenticated(true);
     };

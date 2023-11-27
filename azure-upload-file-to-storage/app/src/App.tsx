@@ -27,7 +27,7 @@ type ListResponse = {
   list: string[];
 };
 
-function App({ username }) {
+function App({ username }: { username: string }) {
   // username = "admin"
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,7 +40,7 @@ function App({ username }) {
       const data = await response.json();
 
       // Map through the data to update the keywords property of each item
-      const updatedData = data.value.map(item => {
+      const updatedData = data.value.map((item: { keywords: string; }) => {
         if (item.keywords) {
           // Split the keywords string by comma and trim whitespace
           const keywordsArray = item.keywords.split(',').map(keyword => keyword.trim());
@@ -56,49 +56,49 @@ function App({ username }) {
   }, []);
   console.log(dataList)
 
-  const [getId, setGetId] = useState("");
-  const [dataById, setDataById] = useState({});
-  const getDataById = useCallback(async () => {
-    const endpoint = `/data-api/rest/media/id`;
-    try {
-      const response = await fetch(`${endpoint}/${getId}`);
-      if (!response.ok) throw new Error('Failed to get data');
-      const data = await response.json();
-      setDataById(data);
-    } catch (error) {
-      console.error('Failed to get data:', error);
-    }
-  }, [getId]);
+  // const [getId, setGetId] = useState("");
+  // const [dataById, setDataById] = useState({});
+  // const getDataById = useCallback(async () => {
+  //   const endpoint = `/data-api/rest/media/id`;
+  //   try {
+  //     const response = await fetch(`${endpoint}/${getId}`);
+  //     if (!response.ok) throw new Error('Failed to get data');
+  //     const data = await response.json();
+  //     setDataById(data);
+  //   } catch (error) {
+  //     console.error('Failed to get data:', error);
+  //   }
+  // }, [getId]);
 
-  const [updateId, setUpdateId] = useState("");
-  const [updateName, setUpdateName] = useState("");
-  const [updateDate, setUpdateDate] = useState("");
-  const [updateDescription, setUpdateDescription] = useState("");
-  const [updateKeywords, setUpdateKeywords] = useState("");
+  // const [updateId, setUpdateId] = useState("");
+  // const [updateName, setUpdateName] = useState("");
+  // const [updateDate, setUpdateDate] = useState("");
+  // const [updateDescription, setUpdateDescription] = useState("");
+  // const [updateKeywords, setUpdateKeywords] = useState("");
 
-  const updateData = useCallback(async () => {
-    const endpoint = `/data-api/rest/media/id`;
-    const data = {
-      name: updateName,
-      date: updateDate,
-      description: updateDescription,
-      keywords: updateKeywords,
-    };
-    try {
-      const response = await fetch(`${endpoint}/${updateId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      if (!response.ok) throw new Error('Failed to update data');
-      // Get the updated data list after update
-      showList();
-    } catch (error) {
-      console.error('Failed to update data:', error);
-    }
-  }, [updateId, updateName, updateDate, updateDescription, updateKeywords, showList]);
+  // const updateData = useCallback(async () => {
+  //   const endpoint = `/data-api/rest/media/id`;
+  //   const data = {
+  //     name: updateName,
+  //     date: updateDate,
+  //     description: updateDescription,
+  //     keywords: updateKeywords,
+  //   };
+  //   try {
+  //     const response = await fetch(`${endpoint}/${updateId}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify(data)
+  //     });
+  //     if (!response.ok) throw new Error('Failed to update data');
+  //     // Get the updated data list after update
+  //     showList();
+  //   } catch (error) {
+  //     console.error('Failed to update data:', error);
+  //   }
+  // }, [updateId, updateName, updateDate, updateDescription, updateKeywords, showList]);
 
   const [mediaName, setMediaName] = useState("");
   const [mediaDescription, setMediaDescription] = useState("");
@@ -131,7 +131,7 @@ function App({ username }) {
     }
   }, [mediaName, mediaDescription, mediaDate, mediaKeywords, blobReference, showList]);
 
-  const deleteData = useCallback(() => async (id) => {
+  const deleteData = useCallback(() => async (id: any) => {
     const endpoint = `/data-api/rest/media/id`;
     try {
       const response = await fetch(`${endpoint}/${id}`, {
@@ -149,7 +149,7 @@ function App({ username }) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [sasTokenUrl, setSasTokenUrl] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<string>('');
-  const [list, setList] = useState<string[]>([]);
+  // const [list, setList] = useState<string[]>([]);
 
   const handleFileSelection = (event: ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
@@ -231,7 +231,7 @@ function App({ username }) {
         // Axios response
         const { data } = result;
         const { list } = data;
-        setList(list);
+        // setList(list);
         console.log(list)
       })
       .catch((error: unknown) => {
@@ -553,11 +553,22 @@ function App({ username }) {
           />
 
           <Grid container spacing={2}>
-            {dataList.filter((data) => {
+
+            {dataList.filter((data: {
+              name: string; keywords: string[]; id: number | string;
+              blob_reference: string;
+              date: string;
+              description: string;
+            }) => {
               // Check if the name or any keyword matches the search term
               return data.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (data.keywords && data.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm.toLowerCase())));
-            }).map((data, index) => (
+                (data.keywords && data.keywords.some((keyword: string) => keyword.toLowerCase().includes(searchTerm.toLowerCase())));
+            }).map((data: {
+              name: string; keywords: string[]; id: number | string;
+              blob_reference: string;
+              date: string;
+              description: string;
+            }) => (
               <Grid item xs={6} sm={4} md={3} key={data.id}>
                 <Card>
                   <CardMedia

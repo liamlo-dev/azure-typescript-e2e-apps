@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
+interface LoginPageProps {
+    handleLogin: (username: string) => void;
+}
 
-function LoginPage({ handleLogin }) {
+const LoginPage: React.FC<LoginPageProps> = ({ handleLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -10,7 +13,7 @@ function LoginPage({ handleLogin }) {
     const [newPassword, setNewPassword] = useState('');
     const [showRegister, setShowRegister] = useState(false);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setError('');
 
@@ -25,7 +28,7 @@ function LoginPage({ handleLogin }) {
             const data = await response.json();
             const users = data.value;
 
-            const user = users.find(user => user.username === username);
+            const user = users.find((user: { username: string; }) => user.username === username);
             if (user && user.password === password) {
                 handleLogin(username);
             } else {
@@ -36,7 +39,7 @@ function LoginPage({ handleLogin }) {
         }
     };
 
-    const handleRegister = async (e) => {
+    const handleRegister = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setError('');
 
@@ -71,7 +74,7 @@ function LoginPage({ handleLogin }) {
                 setError('Failed to create user');
             }
         } catch (error) {
-            if (error.message.includes('409')) {
+            if ((error as Error).message.includes('409')) {
                 setError('Username already exists. Please choose a different one.');
             } else {
                 setError('An error occurred during registration. Please try again.');
@@ -79,7 +82,7 @@ function LoginPage({ handleLogin }) {
         }
     };
 
-    const switchForm = (e) => {
+    const switchForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault(); // This will prevent the form from being submitted when the button is clicked
         setShowRegister(!showRegister);
         setError('');
