@@ -34,7 +34,7 @@ function App({ username }) {
 
   const [dataList, setDataList] = useState([]);
   const showList = useCallback(async () => {
-    const endpoint = 'http://localhost:4280/data-api/rest/media';
+    const endpoint = '/data-api/rest/media';
     try {
       const response = await fetch(endpoint);
       const data = await response.json();
@@ -59,7 +59,7 @@ function App({ username }) {
   const [getId, setGetId] = useState("");
   const [dataById, setDataById] = useState({});
   const getDataById = useCallback(async () => {
-    const endpoint = `http://localhost:4280/data-api/rest/media/id`;
+    const endpoint = `/data-api/rest/media/id`;
     try {
       const response = await fetch(`${endpoint}/${getId}`);
       if (!response.ok) throw new Error('Failed to get data');
@@ -77,7 +77,7 @@ function App({ username }) {
   const [updateKeywords, setUpdateKeywords] = useState("");
 
   const updateData = useCallback(async () => {
-    const endpoint = `http://localhost:4280/data-api/rest/media/id`;
+    const endpoint = `/data-api/rest/media/id`;
     const data = {
       name: updateName,
       date: updateDate,
@@ -108,7 +108,7 @@ function App({ username }) {
 
   const createData = useCallback(async () => {
     console.log(blobReference)
-    const endpoint = `http://localhost:4280/data-api/rest/media`;
+    const endpoint = `/data-api/rest/media`;
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -132,7 +132,7 @@ function App({ username }) {
   }, [mediaName, mediaDescription, mediaDate, mediaKeywords, blobReference, showList]);
 
   const deleteData = useCallback(() => async (id) => {
-    const endpoint = `http://localhost:4280/data-api/rest/media/id`;
+    const endpoint = `/data-api/rest/media/id`;
     try {
       const response = await fetch(`${endpoint}/${id}`, {
         method: 'DELETE',

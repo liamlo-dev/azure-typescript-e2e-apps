@@ -19,7 +19,7 @@ function LoginPage({ handleLogin }) {
             return;
         }
 
-        const endpoint = 'http://localhost:4280/data-api/rest/users';
+        const endpoint = '/data-api/rest/users';
         try {
             const response = await fetch(endpoint);
             const data = await response.json();
@@ -45,7 +45,7 @@ function LoginPage({ handleLogin }) {
             return;
         }
 
-        const endpoint = 'http://localhost:4280/data-api/rest/users';
+        const endpoint = '/data-api/rest/users';
 
         try {
             const response = await fetch(endpoint, {
